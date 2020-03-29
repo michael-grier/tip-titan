@@ -16,7 +16,7 @@ var dataController = (() => {
 
         // divide the total cost by the number of people sharing the bill
         divideByNumberOfPersons: function(total, numPeople) {
-            // the number of people field was blank or NaN, set value to 1
+            // the number of people field was blank, set value to 1
             if (numPeople === 0) {
                 numPeople = 1;
             } 
