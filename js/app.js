@@ -16,6 +16,10 @@ var dataController = (() => {
 
         // divide the total cost by the number of people sharing the bill
         divideByNumberOfPersons: function(total, numPeople) {
+            // the number of people field was blank or NaN, set value to 1
+            if (numPeople === 0) {
+                numPeople = 1;
+            } 
             let dividedCost = total / numPeople;
             return dividedCost;
         }
@@ -33,11 +37,14 @@ var UIController = (() => {
         tipPercent: '.tip_percentage',
         numberOfPeople: '.people_amount',
         calcButton: '.calculate_btn',
-        finalValue: '.cost_per_person'
+        tip: '.tip_value',
+        totalCost: '.total_cost',
+        costEach: '.cost_per_person'
     };
 
-    // return DOMstrings object
+
     return {
+        // return DOMstrings object
         getDOMstrings: () => {
             return DOMstrings;
         },
@@ -52,10 +59,19 @@ var UIController = (() => {
         },
 
         // update the UI to display final calculations
-        displayCalc: function(num) {
-            let element = DOMstrings.finalValue;
+        displayCalc: function(tip, total, per) {
+            let tipCost = DOMstrings.tip;
+            let totalCost = DOMstrings.totalCost;
+            let costPer = DOMstrings.costEach;
 
-            document.querySelector(element).textContent = `Total Cost: $${num.toFixed(2)} each`;
+            document.querySelector(tipCost).textContent = `Tip: $${tip.toFixed(2)}`;
+            document.querySelector(totalCost).textContent = `Total bill: $${total.toFixed(2)}`;
+            
+            // only display if there is more than 1 person sharing the bill
+            if (total !== per) {
+                document.querySelector(costPer).textContent = `Each owe: $${per.toFixed(2)}`;
+            };
+
         }
     };
 
@@ -92,7 +108,7 @@ var globalController = ((dataCtrl, UICtrl) => {
         let costPerPerson = dataCtrl.divideByNumberOfPersons(totalCost, input.numOfPeople);
 
         // update UI -- ui
-        UICtrl.displayCalc(costPerPerson);
+        UICtrl.displayCalc(tipValue, totalCost, costPerPerson);
     };
 
     // initialization function

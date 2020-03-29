@@ -10,5 +10,6 @@ body {
 .tip_value,
 .total_cost,
 .cost_per_person {
-    font-size: 200%;
+    font-size: 175%;
+    text-align: center;
 }
